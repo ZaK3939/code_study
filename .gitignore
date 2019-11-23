@@ -21,6 +21,10 @@ DerivedData
 *.ipa
 *.xcuserstate
 
+screens/
+APIconfig.txt
+
+
 # Android/IntelliJ
 #
 build/

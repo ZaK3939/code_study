@@ -43,7 +43,7 @@ class DetailScreen extends React.Component {
 	async componentDidMount() {
 		// ←追記ここから
 		// Google map APIキーをセット
-		Geocoder.init('AIzaSyCFpOYKtyXiSQAuymkCE2WqqWM4hRl0cfM');
+		Geocoder.init('***APIキーを入力する***');
 
 		// Google map APIを使用して国名から緯度経度へ変換
 		// 非同期処理張本人の文頭には`await`を付ける
