@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements'; // ←追記部分
-import { HomeScreenProps } from '../App';
+
 import { ButtonGroup, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux'; // ←追記部分
 import * as actions from '../actions'; // ←追記部分
-
+import firebase from 'firebase';
 const ALL_INDEX = 0;
 
 const GREAT = 'sentiment-very-satisfied';
@@ -20,7 +20,7 @@ const POOR = 'sentiment-dissatisfied';
 const POOR_INDEX = 3;
 const POOR_COLOR = 'blue'; // ← 追記部分
 
-class HomeScreen extends Component<HomeScreenProps> {
+class HomeScreen extends React.Component {
 	constructor(props) {
 		// ← おまじないの入力 props
 		super(props); // ← おまじないの文 super(props);
@@ -29,6 +29,10 @@ class HomeScreen extends Component<HomeScreenProps> {
 			selectedIndex: ALL_INDEX // ← 変更部分
 		};
 	}
+	handleSignOut = () => {
+		firebase.auth().signOut().then((result) => alert('sign out success')).catch((error) => console.error(error));
+	};
+
 	componentDidMount() {
 		this.props.fetchAllReviews(); // Action creatorを呼ぶ
 	}
@@ -158,6 +162,9 @@ class HomeScreen extends Component<HomeScreenProps> {
 
 		return (
 			<View style={{ flex: 1 }}>
+				<TouchableOpacity onPress={this.handleSignOut}>
+					<Text>Sign Out</Text>
+				</TouchableOpacity>
 				<ButtonGroup
 					buttons={buttonList}
 					selectedIndex={this.state.selectedIndex}

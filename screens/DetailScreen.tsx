@@ -1,21 +1,22 @@
 import Geocoder from 'react-native-geocoding'; // ←追記部分
 import React from 'react';
 import {
+	StyleSheet,
 	Text,
 	View,
 	ScrollView,
-	ActivityIndicator,
-	Image,
+	Picker, // ←追記部分
 	TouchableOpacity,
-	Modal,
 	Dimensions,
-	Platform // ↑追記部分
+	LayoutAnimation,
+	UIManager,
+	Modal,
+	ActivityIndicator
 } from 'react-native';
 import MapView from 'react-native-maps';
-import { HomeScreenProps } from '../App';
 import { connect } from 'react-redux';
-
 import * as actions from '../actions';
+import { GoogleAPI } from './APIConfig';
 
 const SCREEN_WIDTH = Dimensions.get('window').width; // ←追記部分
 const MAP_ZOOM_RATE = 15.0; // ←追記部分
@@ -43,7 +44,7 @@ class DetailScreen extends React.Component {
 	async componentDidMount() {
 		// ←追記ここから
 		// Google map APIキーをセット
-		Geocoder.init('***APIキーを入力する***');
+		Geocoder.init(GoogleAPI);
 
 		// Google map APIを使用して国名から緯度経度へ変換
 		// 非同期処理張本人の文頭には`await`を付ける

@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, StatusBar, Platform } from 'react-native';
+import React, { Component } from 'react';
+import { Text, View, Image, StatusBar, Platform, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import { createAppContainer, createSwitchNavigator, NavigationScreenProp } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -14,46 +14,18 @@ import AddScreen from './screens/AddScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import Setting1Screen from './screens/Setting1Screen'; // ←追記部分
 import Setting2Screen from './screens/Setting2Screen'; // ←追記部分
-import setText from './actions/review_action';
 
-interface StateProps {}
+import LoadingScreen from './screens/LoadingScreen';
+import SignUpScreen from './screens/SignUpScreen';
+// import setText from './actions/review_action';
+// import firebase from 'firebase';
+// import firebaseConfig from './config/firebase';
 
-interface DispatchProps {
-	set_text: typeof setText;
-}
+// firebase.initializeApp(firebaseConfig);
 
-type Props = DispatchProps;
-
-interface State {
-	text: string;
-}
-
-interface IMessageInputEvent extends React.FormEvent<HTMLInputElement> {
-	target: HTMLInputElement;
-}
-
-export interface HomeScreenProps {
-	navigation: NavigationScreenProp<any, any>;
-}
-
-export default class App extends React.Component<Props, State> {
-	constructor(props: Props) {
+class App extends Component {
+	constructor(props) {
 		super(props);
-		this.state = {
-			text: ''
-		};
-		this.handleClick = this.handleClick.bind(this);
-		this.handleChange = this.handleChange.bind(this);
-	}
-
-	handleClick() {
-		this.props.set_text(this.state.text);
-	}
-
-	handleChange(e: IMessageInputEvent) {
-		this.setState({
-			text: e.target.value
-		});
 	}
 
 	render() {
@@ -65,6 +37,7 @@ export default class App extends React.Component<Props, State> {
 			headerTitleStyle: { color: 'white' },
 			headerTintColor: 'white'
 		};
+
 		// `HomeStack`について
 		const HomeStack = createStackNavigator({
 			home: {
@@ -187,17 +160,30 @@ export default class App extends React.Component<Props, State> {
 		);
 		const NavigatorTab = createAppContainer(
 			createSwitchNavigator({
-				// ←変更部分
 				welcome: { screen: WelcomeScreen },
 				main: { screen: MainTab }
 			})
+		);
+		const AuthenticationNavigator = createAppContainer(
+			createSwitchNavigator(
+				{
+					Loading: { screen: LoadingScreen },
+					SignUp: { screen: SignUpScreen },
+					welcome: { screen: WelcomeScreen },
+					main: { screen: MainTab }
+				},
+				{
+					initialRouteName: 'Loading'
+				}
+			)
 		);
 		const store = configureStore();
 		return (
 			<Provider store={store}>
 				<View style={styles.container}>
 					<StatusBar barStyle='light-content' />
-					<NavigatorTab />
+					<AuthenticationNavigator />
+					{/* <NavigatorTab /> */}
 				</View>
 			</Provider> // ←追記部分
 		);
@@ -213,3 +199,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	}
 });
+const mapStateToProps = (state) => {
+	// ←追記部分
+	return { state };
+};
+
+export default App;

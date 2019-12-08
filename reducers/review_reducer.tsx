@@ -1,9 +1,10 @@
-import { FETCH_ALL_REVIEWS, SELECT_DETAIL_REVIEW } from '../actions/types';
+import { FETCH_ALL_REVIEWS, SELECT_DETAIL_REVIEW, Firebaselogin } from '../actions/types';
 
 const INITIAL_STATE = {
 	// 初期データ
 	allReviews: [], // `allReviews`は最初、空の配列とする
-	detailReview: [] // ←追記部分
+	detailReview: [], // ←追記部分
+	login: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,6 +15,9 @@ export default (state = INITIAL_STATE, action) => {
 
 		case SELECT_DETAIL_REVIEW: // ←追記ここから
 			return { ...state, detailReview: action.payload }; // ←追記ここまで
+
+		case Firebaselogin: // ←追記ここから
+			return { ...state }; // ←追記ここまで
 
 		default:
 			// それ以外だったら、
